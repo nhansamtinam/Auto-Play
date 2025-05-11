@@ -22,6 +22,14 @@ local function pressEnter()
     VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.Return, false, game)
 end
 
+-- Hàm dịch chuyển nhân vật
+local function teleportPlayer()
+    local character = player.Character or player.CharacterAdded:Wait()
+    local hrp = character:WaitForChild("HumanoidRootPart")
+    
+    hrp.CFrame = CFrame.new(-1420, 798.9317626953125, -85.00000762939453)
+end
+
 while true do
     while not (player.Character and player.Character:FindFirstChild("HumanoidRootPart")) do
         local playButton = findPlayButton()
@@ -29,6 +37,14 @@ while true do
             GuiService.SelectedObject = playButton
             task.wait(0.2)
             pressEnter()
+            
+            -- Chờ nhân vật xuất hiện rồi dịch chuyển
+            task.spawn(function()
+                local character = player.Character or player.CharacterAdded:Wait()
+                character:WaitForChild("HumanoidRootPart")
+                task.wait(1) -- đợi một chút để đảm bảo nhân vật đã tải xong
+                teleportPlayer()
+            end)
         end
         task.wait(5)
     end
