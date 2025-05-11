@@ -23,10 +23,14 @@ local function pressEnter()
 end
 
 -- Hàm dịch chuyển nhân vật
-local function teleportPlayer()
+local function fastTeleport()
     local character = player.Character or player.CharacterAdded:Wait()
-    local hrp = character:WaitForChild("HumanoidRootPart")
-    
+    local hrp
+    repeat
+        hrp = character:FindFirstChild("HumanoidRootPart")
+        task.wait()
+    until hrp
+
     hrp.CFrame = CFrame.new(-1420, 798.9317626953125, -85.00000762939453)
 end
 
@@ -37,14 +41,9 @@ while true do
             GuiService.SelectedObject = playButton
             task.wait(0.2)
             pressEnter()
-            
-            -- Chờ nhân vật xuất hiện rồi dịch chuyển
-            task.spawn(function()
-                local character = player.Character or player.CharacterAdded:Wait()
-                character:WaitForChild("HumanoidRootPart")
-                task.wait(1) -- đợi một chút để đảm bảo nhân vật đã tải xong
-                teleportPlayer()
-            end)
+
+            -- Dịch chuyển nhanh hơn ngay sau khi nhấn Play
+            task.spawn(fastTeleport)
         end
         task.wait(5)
     end
