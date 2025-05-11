@@ -45,7 +45,7 @@ while true do
             -- Dịch chuyển nhanh hơn ngay sau khi nhấn Play
             task.spawn(fastTeleport)
         end
-        task.wait(5)
+        task.wait(4)
     end
 
     repeat
